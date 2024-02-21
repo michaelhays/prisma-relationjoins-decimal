@@ -1,0 +1,23 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["relationJoins"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model FirstModel {
+  id           Int           @id @default(autoincrement())
+  secondModels SecondModel[]
+}
+
+model SecondModel {
+  id           Int        @id @default(autoincrement())
+  value        Decimal
+  firstModelId Int
+  firstModel   FirstModel @relation(fields: [firstModelId], references: [id])
+
+  @@index([firstModelId])
+}
